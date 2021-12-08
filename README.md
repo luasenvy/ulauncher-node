@@ -26,7 +26,7 @@ https://github.com/luasenvy/ulauncher-node
 
 ## Icon
 
-[Nodejs Icon](https://www.iconfinder.com/icons/1269842/development_install_javascript_js_node_npm_tools_icon) by [Erik Ragnar Eliasson](https://www.iconfinder.com/Erik_Rgnr) in [E-commerce And Shopping](https://www.iconfinder.com/iconsets/e-commerce-and-shopping-3) find with [iconfinder](https://www.iconfinder.com/search?q=node&type=vector&price=free&style=flat)
+[Nodejs Icon](https://www.iconfinder.com/icons/1269842/development_install_javascript_js_node_npm_tools_icon) by [Erik Ragnar Eliasson](https://www.iconfinder.com/Erik_Rgnr) in [iconfinder](https://www.iconfinder.com/search?q=node)
 
 ## Development
 
