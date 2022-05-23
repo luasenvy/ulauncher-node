@@ -45,7 +45,7 @@ class KeywordQueryEventListener(EventListener):
         ))
         return RenderResultListAction(items)
 
-      result = subprocess.check_output([extension.nodePath, '-p', expression], universal_newlines=True, stderr=subprocess.STDOUT)
+      result = subprocess.check_output([extension.nodePath, '-p', expression], universal_newlines=True, stderr=subprocess.STDOUT).strip()
 
       items.append(ExtensionResultItem(icon='images/icon.png',
         name=result,
