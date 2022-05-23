@@ -17,20 +17,35 @@ class NodeExtension(Extension):
     self.subscribe(KeywordQueryEvent, KeywordQueryEventListener())
 
     try:
-      self.nodePath = subprocess.check_output(['which', 'node'], universal_newlines=True, stderr=subprocess.STDOUT)
+      self.nodePath = subprocess.check_output(['which', 'node'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
     except subprocess.CalledProcessError as errorMessage:
-      logger.error('"node" Command Not Found.: %s' % errorMessage)
+      self.nodePath = None
+      self.nodePathErrorMessage = '\'node\' command not found. please install nodejs or make sure add PATH in system environment.'
+      logger.error(self.nodePathErrorMessage)
 
 class KeywordQueryEventListener(EventListener):
   def on_event(self, event, extension):
     items = []
     expression = event.get_argument()
 
-    if None == expression:
-      return RenderResultListAction(items)
-
     try:
-      result = subprocess.check_output(['node', '-p', expression], universal_newlines=True, stderr=subprocess.STDOUT)
+      if None == extension.nodePath:
+        items.append(ExtensionResultItem(icon='images/icon.png',
+          name=extension.nodePathErrorMessage,
+          description='\'node\' command is not found.',
+          on_enter=CopyToClipboardAction(extension.nodePathErrorMessage)
+        ))
+        return RenderResultListAction(items)
+
+      if None == expression:
+        items.append(ExtensionResultItem(icon='images/icon.png',
+          name='Node: there is no code.',
+          description='please input script code.',
+          on_enter=None
+        ))
+        return RenderResultListAction(items)
+
+      result = subprocess.check_output([extension.nodePath, '-p', expression], universal_newlines=True, stderr=subprocess.STDOUT)
 
       items.append(ExtensionResultItem(icon='images/icon.png',
         name=result,
