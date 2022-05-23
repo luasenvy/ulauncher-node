@@ -1,3 +1,4 @@
+import logging
 import subprocess
 
 from ulauncher.api.client.Extension import Extension
@@ -8,17 +9,26 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 from ulauncher.api.shared.action.CopyToClipboardAction import CopyToClipboardAction
 
-class NodeExtension(Extension):
+logger = logging.getLogger(__name__)
 
+class NodeExtension(Extension):
   def __init__(self):
     super(NodeExtension, self).__init__()
     self.subscribe(KeywordQueryEvent, KeywordQueryEventListener())
 
-class KeywordQueryEventListener(EventListener):
+    try:
+      self.nodePath = subprocess.check_output(['which', 'node'], universal_newlines=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as errorMessage:
+      logger.error('"node" Command Not Found.: %s' % errorMessage)
 
+class KeywordQueryEventListener(EventListener):
   def on_event(self, event, extension):
     items = []
     expression = event.get_argument()
+
+    if None == expression:
+      return RenderResultListAction(items)
+
     try:
       result = subprocess.check_output(['node', '-p', expression], universal_newlines=True, stderr=subprocess.STDOUT)
 
@@ -36,4 +46,4 @@ class KeywordQueryEventListener(EventListener):
     return RenderResultListAction(items)
 
 if __name__ == '__main__':
-   NodeExtension().run()
+  NodeExtension().run()
