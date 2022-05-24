@@ -16,13 +16,24 @@ node -p "INPUT"
 * Python >= 2.7
 * Node
 
-## Install
+## Install Nodejs
+
+Install Nodejs From Snap (Recommend):
+  [https://snapcraft.io/node](https://snapcraft.io/node)
+
+Or Install Nodejs Manually And Make Link:
+```
+ln -s /some/where/bin/node /usr/local/bin
+```
+
+## Install Extension On Ulauncher
 
 Open ulauncher preferences window -> extensions -> add extension and paste the following url:
 
 ```
 https://github.com/luasenvy/ulauncher-node
 ```
+
 
 ## Icon
 
