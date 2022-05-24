@@ -18,10 +18,18 @@ class NodeExtension(Extension):
 
     try:
       self.nodePath = subprocess.check_output(['which', 'node'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
-    except subprocess.CalledProcessError as errorMessage:
-      self.nodePath = None
-      self.nodePathErrorMessage = '\'node\' command not found. please install nodejs or make sure add PATH in system environment.'
-      logger.error(self.nodePathErrorMessage)
+    except subprocess.CalledProcessError:
+      try:
+        tryNodeVersion = subprocess.check_output(['/snap/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
+        self.nodePath = '/snap/bin/node'
+      except (FileNotFoundError, subprocess.CalledProcessError):
+        try:
+          tryNodeVersion = subprocess.check_output(['/usr/local/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
+          self.nodePath = '/usr/local/bin/node'
+        except (FileNotFoundError, subprocess.CalledProcessError):
+          self.nodePath = None
+          self.nodePathErrorMessage = '\'node\' command not found. please read \'Install Nodejs\' section. https://github.com/luasenvy/ulauncher-node'
+          logger.error(self.nodePathErrorMessage)
 
 class KeywordQueryEventListener(EventListener):
   def on_event(self, event, extension):
@@ -32,7 +40,7 @@ class KeywordQueryEventListener(EventListener):
       if None == extension.nodePath:
         items.append(ExtensionResultItem(icon='images/icon.png',
           name=extension.nodePathErrorMessage,
-          description='\'node\' command is not found.',
+          description='\'node\' command not found.',
           on_enter=CopyToClipboardAction(extension.nodePathErrorMessage)
         ))
         return RenderResultListAction(items)
