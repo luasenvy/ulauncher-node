@@ -23,7 +23,7 @@ Install Nodejs From Snap (Recommend):
 
 Or Install Nodejs Manually And Make Link:
 ```
-ln -s /some/where/bin/node /usr/local/bin
+ln -s /some/where/bin/node /usr/local/bin/node
 ```
 
 ## Install Extension On Ulauncher
