@@ -20,7 +20,7 @@ class NodeExtension(Extension):
       self.nodePath = subprocess.check_output(['which', 'node'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
     except subprocess.CalledProcessError:
       try:
-        self.nodePath = subprocess.check_output(['source ~/.bashrc && nvm which current'], universal_newlines=True, shell=True, text=True, executable="/bin/bash", stderr=subprocess.STDOUT).strip()
+        self.nodePath = subprocess.check_output('source ~/.bashrc && nvm which current', universal_newlines=True, shell=True, text=True, executable="/bin/bash", stderr=subprocess.STDOUT).strip()
       except subprocess.CalledProcessError:
         try:
           tryNodeVersion = subprocess.check_output(['/snap/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
