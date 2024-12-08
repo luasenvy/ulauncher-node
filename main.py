@@ -20,16 +20,20 @@ class NodeExtension(Extension):
       self.nodePath = subprocess.check_output(['which', 'node'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
     except subprocess.CalledProcessError:
       try:
-        tryNodeVersion = subprocess.check_output(['/snap/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
-        self.nodePath = '/snap/bin/node'
-      except (FileNotFoundError, subprocess.CalledProcessError):
+        tryNodeVersion = subprocess.check_output(['$NVM_BIN/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
+        self.nodePath = '$NVM_BIN/node'
+      except subprocess.CalledProcessError:
         try:
-          tryNodeVersion = subprocess.check_output(['/usr/local/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
-          self.nodePath = '/usr/local/bin/node'
+          tryNodeVersion = subprocess.check_output(['/snap/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
+          self.nodePath = '/snap/bin/node'
         except (FileNotFoundError, subprocess.CalledProcessError):
-          self.nodePath = None
-          self.nodePathErrorMessage = '\'node\' command not found. please read \'Install Nodejs\' section. https://github.com/luasenvy/ulauncher-node'
-          logger.error(self.nodePathErrorMessage)
+          try:
+            tryNodeVersion = subprocess.check_output(['/usr/local/bin/node', '-v'], universal_newlines=True, stderr=subprocess.STDOUT).strip()
+            self.nodePath = '/usr/local/bin/node'
+          except (FileNotFoundError, subprocess.CalledProcessError):
+            self.nodePath = None
+            self.nodePathErrorMessage = '\'node\' command not found. please read \'Install Nodejs\' section. https://github.com/luasenvy/ulauncher-node'
+            logger.error(self.nodePathErrorMessage)
 
 class KeywordQueryEventListener(EventListener):
   def on_event(self, event, extension):
