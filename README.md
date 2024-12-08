@@ -18,7 +18,10 @@ node -p "INPUT"
 
 ## Install Nodejs
 
-Install Nodejs From Snap (Recommend):
+Install Nodejs(Recommend):
+  [https://nodejs.org/](https://nodejs.org/)
+
+Or Install Nodejs From Snap:
   [https://snapcraft.io/node](https://snapcraft.io/node)
 
 Or Install Nodejs Manually And Make Link:
