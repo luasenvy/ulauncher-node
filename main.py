@@ -22,6 +22,7 @@ class NodeExtension(Extension):
       try:
         command = """
 export NVM_DIR="$HOME/.nvm"
+if [ -d "$HOME/.config/nvm" ]; then export NVM_DIR="$HOME/.config/nvm"; fi
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm which current
 """
         self.nodePath = subprocess.check_output(command, universal_newlines=True, shell=True, text=True, executable="/bin/bash", stderr=subprocess.STDOUT).strip()
